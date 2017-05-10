@@ -161,11 +161,13 @@ hl,ltae = getLotacao(urlltadm)
 
 meses = getSelect('http://transparencia.uepb.edu.br/consulta/')
 meses_td = gen_list('.',meses)
+print(meses_td)
+print(len(meses_td))
 
 z = [ meses[0] , meses[len(meses)-20] ]
 z = meses[31:40]
 
-xlsOut = pd.ExcelWriter('dadosAbertos.xls')
+#xlsOut = pd.ExcelWriter('dadosAbertos.xls')
 for mes in meses_td:
 #for mes in z:
     print("==== " + mes +" ====")
@@ -225,7 +227,7 @@ for mes in meses_td:
         val.insert(0,ldata[4])
         
         data.append(val)
-        time.sleep(0.05)
+        time.sleep(0.10)
 
 
     fdata = pd.DataFrame(data)
