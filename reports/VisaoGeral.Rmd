@@ -1,0 +1,150 @@
+---
+params:
+  input_file: "../data/02-2017.csv"
+  set_title: "Report 01"
+  set_date: "May 10, 2017"
+
+title: "`r params$set_title`"
+author: "Thiago Nóbrega"
+date: "`r params$set_date`"
+output: 
+  html_document:
+    toc: true
+    theme: united
+---
+
+```{r setup, include=FALSE}
+library(readr)
+library(ggplot2)
+source('../plot_util.R')
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r load_data, include=FALSE}
+fixVal <- function(val) {
+  
+  a =  strsplit(val, "\\.(?=[^\\.]+$)", perl=TRUE)
+  
+  if (length(a[[1]]) > 1){
+    p <- gsub('\\.','',a[[1]][1])
+    return( paste(p,a[[1]][2],sep = ".") )
+  }
+  
+  return(val)
+}
+
+rf <- params$input_file
+data <- read.csv2(rf,header = TRUE,sep = ',' ,fileEncoding="UTF-8")
+
+data$Remuneração = as.numeric(lapply(as.character(data$Remuneração),fixVal))
+data$Total.Vantagens.Pessoais = as.numeric(lapply(as.character(data$Total.Vantagens.Pessoais),fixVal))
+data$Total.Vantagens.Transitorias = as.numeric(lapply(as.character(data$Total.Vantagens.Transitorias),fixVal))
+data$Terço.de.Férias = as.numeric(lapply(as.character(data$Terço.de.Férias),fixVal))
+data$Abono.de.Permanência = as.numeric(lapply(as.character(data$Abono.de.Permanência),fixVal))
+data$Total.Bruto =  as.numeric(lapply(as.character(data$Total.Bruto),fixVal))
+data$Descontos.Obrigatórios = as.numeric(data$Descontos.Obrigatórios)
+data$Total.Líquido = as.numeric(lapply(as.character(data$Total.Líquido),fixVal))
+
+func = 'TÉCNICO ADMINISTRATIVO'
+todos <- data
+tae <- data[data$Cargo == func,]
+doc <- data[data$Cargo != func,]
+
+```
+
+
+#Distribuição Global dos Salários de todos os Servidores (Técnicos e Professores)
+
+Nesta seção é possivel visualizar, em um histograma, a distribuição dos salários de todos os servidores (cadastrados no RH). O histograma mostra no eixo vertical (eixo y) a quantidade de servidores que recebe o salário (indicado no eixo horizontal), onde cada barra representa R$ 500 de diferença.
+
+Para um melhor entendiento foi gerado um par de gráfico para a **remuneração** e outro com o **total liquido** (remuneração+auxilios+gratificações-impostos). 
+
+### Remuneração (Salário de aposentadoria)
+
+```{r}
+salaryHistogramRemuneracao(todos)
+```
+
+Uma outra maneira de visualizar este gráfico é separar os servidores por vinculos: 
+
+* Cedido
+* Comissionado
+* Estatutário
+* Prestado de Serviço
+* Temporario
+* **Não sei**: em dados antigos não é possivel recuperar a lotação do servidor [1][2], pois não é disponibilizados os dados historicos. Por alguns servidores são classificados dessa maneira.
+
+```{r}
+salaryHistogramRemuneracaoPerVinculo(todos)
+```
+
+### Total Líquido
+```{r}
+salaryHistogramTotalLiquido(todos)
+```
+
+Uma outra maneira de visualizar este gráfico é separar os servidores por vinculos: 
+
+* Cedido
+* Comissionado
+* Estatutário
+* Prestado de Serviço
+* Temporario
+* **Não sei**: em dados antigos não é possivel recuperar a lotação do servidor [1][2], pois não é disponibilizados os dados historicos. Por alguns servidores são classificados dessa maneira.
+
+```{r}
+salaryHistogramTotalLiquidoPerVinculo(todos)
+```
+
+PS: Preciso de ajuda para explicar o que é cada um dos vinculos acima e de uma maneira de classificar os servidores com vinculo não sei. Qualquer contribuição é bem vinda.
+
+
+##Distribuição dos Salários dos Professores
+
+### Remuneração (Salário de aposentadoria)
+
+```{r}
+salaryHistogramRemuneracao(doc)
+```
+
+```{r}
+salaryHistogramRemuneracaoPerVinculo(doc)
+```
+
+### Total Líquido
+```{r}
+salaryHistogramTotalLiquido(doc)
+```
+
+```{r}
+salaryHistogramTotalLiquidoPerVinculo(doc)
+```
+
+##Distribuição dos Salários dos Técnicos Administrativos
+
+### Remuneração (Salário de aposentadoria)
+
+```{r}
+salaryHistogramRemuneracao(tae)
+```
+
+```{r}
+salaryHistogramRemuneracaoPerVinculo(tae)
+```
+
+### Total Líquido
+```{r}
+salaryHistogramTotalLiquido(tae)
+```
+
+```{r}
+salaryHistogramTotalLiquidoPerVinculo(tae)
+```
+
+## Including Plots
+
+
+## Referências
+
+1 - <http://comissoes.uepb.edu.br/cppd/servidores-docentes/>
+2 - <http://comissoes.uepb.edu.br/cppta/servidores-tecnicos/>
