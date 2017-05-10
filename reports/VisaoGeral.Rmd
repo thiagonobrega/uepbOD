@@ -104,20 +104,20 @@ PS: Preciso de ajuda para explicar o que é cada um dos vinculos acima e de uma 
 ### Remuneração (Salário de aposentadoria)
 
 ```{r}
-salaryHistogramRemuneracao(doc)
+salaryHistogramRemuneracao(doc,"Professores")
 ```
 
 ```{r}
-salaryHistogramRemuneracaoPerVinculo(doc)
+salaryHistogramRemuneracaoPerVinculo(doc,"Professores")
 ```
 
 ### Total Líquido
 ```{r}
-salaryHistogramTotalLiquido(doc)
+salaryHistogramTotalLiquido(doc,"Professores")
 ```
 
 ```{r}
-salaryHistogramTotalLiquidoPerVinculo(doc)
+salaryHistogramTotalLiquidoPerVinculo(doc,"Professores")
 ```
 
 ##Distribuição dos Salários dos Técnicos Administrativos
@@ -125,26 +125,45 @@ salaryHistogramTotalLiquidoPerVinculo(doc)
 ### Remuneração (Salário de aposentadoria)
 
 ```{r}
-salaryHistogramRemuneracao(tae)
+salaryHistogramRemuneracao(tae,"Técnicos Administrativos")
 ```
 
 ```{r}
-salaryHistogramRemuneracaoPerVinculo(tae)
+salaryHistogramRemuneracaoPerVinculo(tae,"Técnicos Administrativos")
 ```
 
 ### Total Líquido
 ```{r}
-salaryHistogramTotalLiquido(tae)
+salaryHistogramTotalLiquido(tae,"Técnicos Administrativos")
 ```
 
 ```{r}
-salaryHistogramTotalLiquidoPerVinculo(tae)
+salaryHistogramTotalLiquidoPerVinculo(tae,"Técnicos Administrativos")
 ```
 
-## Including Plots
+# Vencimento Líquido por vinculo
 
+A contratação de servidores sem concurso publico é uma prática controversa, embora necessária. Para ilustrar como o vencimento liguido de um servidor contratado/comissionado em relação a um servidor concursado. Para realizar tal analise foi gerado um grafico de pontos associado a um diagrama de caixa (boxplot);
+* Os pontos indicam o vencimento líquido de cada servidor da instituição.
+* O boxplot apresenta a menor,maior, a média, o terceiro e segundo quarti dos salários. Para mais informação sobre o Diagrama de Caixa acesso o site <https://pt.wikipedia.org/wiki/Diagrama_de_caixa>.
 
-## Referências
+## Todos os servidores
+```{r}
+boxplotVencimentoVinculo(data)
+```
+
+## Professores
+```{r}
+boxplotVencimentoVinculo(doc,"Professores")
+```
+
+## Técnicos Administrativos
+```{r}
+boxplotVencimentoVinculo(tae,"Técnicos Administrativos")
+```
+
+# Referências
 
 1 - <http://comissoes.uepb.edu.br/cppd/servidores-docentes/>
+
 2 - <http://comissoes.uepb.edu.br/cppta/servidores-tecnicos/>
