@@ -1,10 +1,12 @@
-files <- list.files(path = 'data/', pattern = '.csv')[1:4]
+files <- list.files(path = 'data/', pattern = '.csv')
 
-template <- 'reports/report_01.Rmd'
+template <- 'reports/VisaoGeral.Rmd'
+
 for (name in files) {
+  title <- "Visão Geral do mês "
   input <- paste("../data/",name,sep="")
-  output <- paste("../out/",gsub('csv','html',name),sep="")
-  print(input)
-  print(output)
-  rmarkdown::render(template, params = list(input_file = input), output_file = output)
+  output <- paste("../out/VisaoGeral",gsub('csv','html',name),sep="")
+  title <- paste(title,gsub('.csv','',name),sep="")
+  print(title)
+  rmarkdown::render(template, params = list(input_file = input,set_title = title,set_date = "10 de Maio 2017"), output_file = output)
 }
