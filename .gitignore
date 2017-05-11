@@ -8,6 +8,7 @@ Desktop.ini
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 .Rproj.user/
+.RData
 
 # Windows Installer files
 *.cab
@@ -28,6 +29,7 @@ $RECYCLE.BIN/
 .DS_Store
 .AppleDouble
 .LSOverride
+.Rhistory
 
 # Thumbnails
 ._*
@@ -46,8 +48,3 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
-<<<<<<< HEAD
-.Rhistory
-=======
-.Rproj.user
->>>>>>> origin/master
