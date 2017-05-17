@@ -14,7 +14,7 @@ Esse crawler é bem simples (para mim), ele simula a navegação e captura os da
 
 O gráfico abaixo ilustra como funciona o processo:
 
-[![Processo](https://raw.github.com/thiagonobrega/uepbOD/master/imagens/crawler.png)]
+[![Processo](https://raw.githubusercontent.com/thiagonobrega/uepbOD/master/imagens/crwaler.png)]
 
 [1] - <http://transparencia.uepb.edu.br/consulta/>
 [2] - <http://comissoes.uepb.edu.br/cppd/servidores-docentes/>
