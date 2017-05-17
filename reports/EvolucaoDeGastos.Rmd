@@ -40,16 +40,22 @@ for (name in files[2:length(files)]) {
 ```
 
 Para melhor compreender/auditar os dados capturados pelo [crawller](https://github.com/thiagonobrega/uepbOD), foram criados graficos com o intuido de :
- * Blah
- * Mostrar
+
+ * Avaliar os gastos da folha ao longo dos anos (2009 a 2017)
+ * Avaliar o quantitativo de servidores ao longo dos anos (2009 a 2017)
+ * AValiar quanto da folha é gasto com pessoal concursado e não concursado
+    - De modo global, Cargo e Vínculo 
 
 ## Graficos
+
+Todos os gráficos foram construidos sobre os valores anuais, ou seja os dados diponibilizados no meu [github](https://github.com/thiagonobrega/uepbOD/tree/master/data) foi consolidado por ano, por isso todos os graficos mostram que 2017 teve um
+
 São os dados anuais
 Metodologia
 
 ###  Gastos com a Folha versus o quantitativo da servidores
 
-O grafico abaixo ilustra a evolução da folha frente o número de servidores (estatutarios, comissionados, cedidos,...).
+O grafico abaixo ilustra a evolução da folha frente o número de servidores (estatutarios, comissionados, cedidos,...) ao longo dos anos.
 
 ```{r}
 plot_QuantidadeServidoresGastoBrutoAnual(fullData)
