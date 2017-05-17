@@ -52,13 +52,15 @@ plot_QuantidadeServidoresGastoBrutoAnual <- function(data){
   grid.draw(g)
 }
 
-plot_QuantidadeServidoresGastoBrutoAnual(fullData)
+#plot_QuantidadeServidoresGastoBrutoAnual(fullData)
 
 plot_folhaVsCargo <- function(data){
 
   meltData_a <- melt(data[complete.cases(data$Total.Bruto),], id=c("ano", "Cargo") , measure.vars = c("Total.Bruto"))
   wd_a <- dcast(meltData_a, ano + Cargo ~ variable , sum)
   
+  #wd_a$Cargo <- reorder(wd_a$Cargo,wd_a$Total.Bruto)
+  wd_a <- wd_a[with(wd_a, order(Total.Bruto, Cargo)), ]
   
   ggplot(wd_a, aes(x=ano,y=Total.Bruto/1e6) ) +
     geom_bar(stat="identity",aes(fill = Cargo)) + 
@@ -70,12 +72,13 @@ plot_folhaVsCargo <- function(data){
     theme(legend.position = "bottom")
 }
 
-plot_folhaVsCargo(fullData)
+#plot_folhaVsCargo(fullData)
 
 plot_folhaVsCargo_Quantitativo <- function(data){
   
   meltData_a <- melt(data[complete.cases(data$Total.Bruto),], id=c("ano", "Cargo") , measure.vars = c("Total.Bruto"))
   wd_a <- dcast(meltData_a, ano + Cargo ~ variable , sum)
+  wd_a <- wd_a[with(wd_a, order(Total.Bruto, Cargo)), ]
   
   wdQS_a <- ddply(data[complete.cases(data$Total.Bruto),],~ano + Cargo,summarise,numero_de_servidores=length(unique(Matrícula)))
   
@@ -121,30 +124,30 @@ plot_folhaVsCargo_Quantitativo <- function(data){
   grid.draw(g)
 }
 
-plot_folhaVsCargo_Quantitativo(fullData)
+#plot_folhaVsCargo_Quantitativo(fullData)
 
 plot_folhaVsVinculo <- function(data){
   
   meltData_a <- melt(data[complete.cases(data$Total.Bruto),], id=c("ano", "Vínculo") , measure.vars = c("Total.Bruto"))
   wd_a <- dcast(meltData_a, ano + Vínculo ~ variable , sum)
   
-  
   ggplot(wd_a, aes(x=ano,y=Total.Bruto/1e6) ) +
     geom_bar(stat="identity",aes(fill = Vínculo)) + 
     scale_x_continuous(breaks = seq(2009,2017) ) + 
-    labs( title = "Gastos com a folha por cargo" ) +
+    labs( title = "Gastos com a folha por Vínculo" ) +
     labs(x="") + labs(y="Gastos em Milhões de R$") + 
     theme(axis.text.x = element_text(angle = 70, hjust = 1)) +
     theme(legend.position = "bottom")
 }
 
-plot_folhaVsVinculo(fullData)
+#plot_folhaVsVinculo(fullData)
 
 
 lixo_percentPorCargo <- function(data){
   
   meltData_a <- melt(data[complete.cases(data$Total.Bruto),], id=c("ano", "Cargo") , measure.vars = c("Total.Bruto"))
   wd_a <- dcast(meltData_a, ano + Cargo ~ variable , sum)
+  
   
   z <- dcast(meltData_a, ano ~ variable , sum )
   z <- rename(z, c("Total.Bruto"="total_ano"))
@@ -170,6 +173,7 @@ plot_pecentualPorVinculo <- function(data,filter){
   
   meltData_a <- melt(data[complete.cases(data$Total.Bruto),], id=c("ano", "Vínculo") , measure.vars = c("Total.Bruto"))
   wd_a <- dcast(meltData_a, ano + Vínculo ~ variable , sum)
+  wd_a <- wd_a[with(wd_a, order(Total.Bruto, Vínculo)), ]
   
   z <- dcast(meltData_a, ano ~ variable , sum )
   z <- rename(z, c("Total.Bruto"="total_ano"))
@@ -194,8 +198,8 @@ plot_pecentualPorVinculo <- function(data,filter){
     theme(legend.position = "bottom")
 }
 
-plot_pecentualPorVinculo(fullData)
-plot_pecentualPorVinculo(fullData,True)
+#plot_pecentualPorVinculo(fullData)
+#plot_pecentualPorVinculo(fullData,True)
 
 plot_pecentualPorCargoVinculo <- function(data,filter){
   meltData_a <- melt(data[complete.cases(data$Total.Bruto),], id=c("ano", "Vínculo" , "Cargo") , measure.vars = c("Total.Bruto"))
@@ -224,13 +228,14 @@ plot_pecentualPorCargoVinculo <- function(data,filter){
     theme(legend.position = "bottom")
 }
 
-plot_pecentualPorCargoVinculo(fullData)
-plot_pecentualPorCargoVinculo(fullData,TRUE)
+#plot_pecentualPorCargoVinculo(fullData)
+#plot_pecentualPorCargoVinculo(fullData,TRUE)
 
 plot_custoCargoVinculoEstatutario_Quantitativo <- function(data){
   
   meltData_a <- melt(data[complete.cases(data$Total.Bruto),], id=c("ano", "Vínculo" , "Cargo") , measure.vars = c("Total.Bruto"))
   wd_a <- dcast(meltData_a, ano + Cargo + Vínculo ~ variable , sum)
+  
   
   z <- dcast(meltData_a, ano ~ variable , sum )
   z <- rename(z, c("Total.Bruto"="total_ano"))
@@ -238,7 +243,7 @@ plot_custoCargoVinculoEstatutario_Quantitativo <- function(data){
   z['percent'] <- z$Total.Bruto / z$total_ano
   
   z <- z[z$Vínculo == 'ESTATUTÁRIO',]
-  
+  z <- z[with(z, order(Total.Bruto, Vínculo)), ]
   
   
   wdQS_a <- ddply(data[complete.cases(data$Total.Bruto),],~ano + Cargo + Vínculo ,summarise,numero_de_servidores=length(unique(Matrícula)))
@@ -289,4 +294,4 @@ plot_custoCargoVinculoEstatutario_Quantitativo <- function(data){
   grid.draw(g)
 }
 
-plot_custoCargoVinculoEstatutario_Quantitativo(fullData)
+#plot_custoCargoVinculoEstatutario_Quantitativo(fullData)

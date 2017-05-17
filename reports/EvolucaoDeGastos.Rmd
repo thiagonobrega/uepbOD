@@ -1,0 +1,137 @@
+---
+title: "Evolucao dos Gastos"
+author: "Thiago Nobrega"
+date: "May 17, 2017"
+html_document:
+    toc: true
+    theme: united
+---
+
+```{r setup, include=FALSE}
+library(readr)
+library(ggplot2)
+source('../file_util.R', encoding="utf-8")
+source('../plot_Complex.R', encoding="utf-8")
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r load_data, include=FALSE}
+files <- list.files(path = '../data/', pattern = '.csv')
+
+fullData <- read_data(paste("../data/",files[1],sep=""))
+mes <- head(strsplit(files[1],"-")[[1]],1)
+ano <- gsub('.csv','',tail(strsplit(files[1],"-")[[1]],1))
+
+fullData["mes"] <- as.integer(mes)
+fullData["ano"] <- as.integer(ano)
+
+for (name in files[2:length(files)]) {
+
+  input <- paste("../data/",name,sep="")
+  tr <- read_data(input)
+  mes <- head(strsplit(name,"-")[[1]],1)
+  ano <- gsub('.csv','',tail(strsplit(name,"-")[[1]],1))
+  
+  tr["mes"] <- as.integer(mes)
+  tr["ano"] <- as.integer(ano)
+  
+  fullData <- rbind(fullData,tr)
+}
+```
+
+Para melhor compreender/auditar os dados capturados pelo [crawller](https://github.com/thiagonobrega/uepbOD), foram criados graficos com o intuido de :
+ * Blah
+ * Mostrar
+
+## Graficos
+São os dados anuais
+Metodologia
+
+###  Gastos com a Folha versus o quantitativo da servidores
+
+O grafico abaixo ilustra a evolução da folha frente o número de servidores (estatutarios, comissionados, cedidos,...).
+
+```{r}
+plot_QuantidadeServidoresGastoBrutoAnual(fullData)
+```
+
+Percebe-se que de 2013 a 2015 o número de servidores foi drasticamente reduzido (de 2.895 para 2.527). Com tudo do ano de 2013 para o ano de 2014 é possível observar um aumento consideravel na folha (milhões). Este comportamente é justificado por progressões e a implantação dos vales (alimentação e saúde).
+
+###  Gastos com a Folha por Cargo
+
+Para um melhor detalhamento da folha plotei um grafico do número de servidores por cargo (Técnicos Administrativos vs. Professores).
+
+```{r}
+plot_folhaVsCargo(fullData)
+```
+
+Desse modo podemos constatar que os gastos por cargo acompanham a tendecia do grafico de anterior, ressaltando que o maior impacto vem de gastos com o pagamento da folha docente (fato já esperado).
+
+### Gastos com a Folha por Cargo com o quantitativo
+
+Para entender a evolução dos gastos, foi gerado um grafico ilustrando o quantitativo de servidores por cargo ao longo dos anos. No gráfico abaixo é possivel verificar o gastos (em milhões) por cargo nas barras verticais, já o quantitativo de servidores por cargo é indicado pelas linhas e pontos (vermelho para os docentes e azul para os técnicos administrativos).
+
+```{r}
+plot_folhaVsCargo_Quantitativo(fullData)
+```
+
+O gráfico acima ilustra que; 
+ * o número de professores vem dimuindo (apartir do ano de 2010), com execeção do ano de 2016 que teve um aumento em relação ao ano de 2015 (acredito que em razão do campus de araruna)
+ * o número de técnicos segue uma tendecia (tendecia não esta plotada) de aumento do número de técnicos desde 2009 (fato que julgo necessário, visto temos bem menos técnicos as demais universidade do mesmo porte)
+ * mesmo com a diminuição do quantitativo de servidores (docentes + técnicos) os gastos continuam a aumentar. Fato natural pois as pessoas se qualificam e progridem na carreira.
+
+O grafico abaixo ilustra os gastos/quantitativos com os servidores estátutarios por classe.
+
+```{r}
+plot_custoCargoVinculoEstatutario_Quantitativo(fullData)
+```
+
+E como se pode perceber ... (concluir depois)
+
+### Gastos da Folha por Vínculo
+
+Antes de iniciar a descrever esta analise gostaria de lembrar que existe um vínculo "NAO SEI", este vinculo *eu* criei para os servidores que não conseguia relacionar os dados da folha com o dado de lotação. Esta relação nao foi possivel pois os dados disponiveis (no portal da transparencia) reflete apenas o momento, ou seja como eu realizei a captura dos dados em 2017 não tinha disponivel os dados dos anos anteriores. Estes servidores acredito que sejam servidores hoje aposentados, temporarios, comissionados e prestadores de serviços. Para mais informações leiam sobre o [crawller](https://github.com/thiagonobrega/uepbOD) e consultem os dados brutos para comprovarem o que estou falando.
+
+Feito o preâmbulo sobre os dados vamos discutir uma questão que muito e discudida no achismo, os gastos com servidores não estatutarios.
+
+Em diversos jornais e grupos na internet se fale que o a universidade é um cabide de empregos, onde a quantidade de servidores comissionados/apradinhados que consomem grande parte do seu orçamento. Esta seção mostra de formal cabal que o problema não reside nos temporarios/comissionados. O gráfico abaixo ilustra o percentual de gastos por vínculo.
+
+```{r}
+plot_pecentualPorVinculo(fullData)
+```
+
+Podemos perceber que a maior parte dos gasto da folha é com servidores estaturários. Mas alguem pode questionar:
+
+*- mas no ano de 2009 37% dos gastos foram com o vínculo "NAO SEI"!*
+
+Sim isso é verdade, mas lembrando que: 
+ * Entre 2009 e 2012 o gastos com a folha eram bem menor (quase metade) e o número de servidores estaturarios era bem menor
+ * Que a categoria não sei contempla servidores estaturaios aposentados, professores temporarios, prestadores de serviço, etc ...
+ * A medida que os dados ficam disponiveis (2016) este valor vai para 0
+
+Mas enfim quanto gastamos com prestadores de serviços, comissionados e professores temporários? 
+
+```{r}
+plot_pecentualPorVinculo(fullData,True)
+```
+
+Para responder esta pergunta vamos observar os anos de 2016 e 2017, onde os dados ficam mais confiaveis para esse tipo de analise:
+ * 2016: 5% docentes temporários + 4% de prestadores de serviço = 9%*
+ * 2017: 8% docentes temporários + 5% de prestadores de serviço = 13%*
+ 
+ Ou seja 10% ao ano e gasto com servidores não concursados. 
+ 
+ **- Mas esse valor é muito elevado!**
+ 
+ Sim é, mas considerando que abrimos um campus novo (Araruna) e poucos docentes e técnicos administrativos foram contratado, não posso afirmar que este valor é absurdo ou inviabiliza a universidade.
+
+* Os demais vínculos não chegam a 1% e por isso não foram computados
+
+### Gastos da Folha por Vínculo
+
+## Proximas analises
+
+Verificar onde estão a maioria dos comissionados
+
+## Conclusões
+
