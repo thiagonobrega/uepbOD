@@ -227,7 +227,7 @@ for mes in meses_td:
         val.insert(0,ldata[4])
         
         data.append(val)
-        time.sleep(0.10)
+        time.sleep(1.89)
 
 
     fdata = pd.DataFrame(data)
