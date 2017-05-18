@@ -295,3 +295,104 @@ plot_custoCargoVinculoEstatutario_Quantitativo <- function(data){
 }
 
 #plot_custoCargoVinculoEstatutario_Quantitativo(fullData)
+
+plot_gratificacoesBar <- function(data,filter){
+  
+  d <- data[ data$Gratificação.Cargo.Comissionado.Função != 0,]
+  d['vg'] <- d$Gratificação.Cargo.Comissionado.Função
+  
+  meltData_a <- melt(d, id=c("ano") , measure.vars = "vg")
+  wd_a <- dcast(meltData_a, ano ~ variable , sum)
+  
+  #wd_a <- wd_a[with(wd_a, order(vg, -Cargo )), ]
+  
+  z <- dcast(meltData_a, ano ~ variable , sum )
+  z <- rename(z, c("vg"="total_ano"))
+  z <- merge(wd_a, z, by=c("ano","ano"))
+  z['percent'] <- z$Gratificação.Cargo.Comissionado.Função / z$total_ano
+  
+  if ( ! missing(filter) ){
+    z <- z[z$Vínculo != 'NAO SEI',]
+    z <- z[z$Vínculo != 'ESTATUTÁRIO' & ( z$Cargo == 'TÉCNICO ADMINISTRATIVO' | z$Cargo == 'PROFESSOR'),]
+  } 
+  
+  ggplot(z, aes(x=ano,y=vg/1e6) ) +
+    geom_bar(stat="identity") + 
+    #geom_bar(stat="identity",position="dodge", aes(fill = 'Total' )) +
+    scale_x_continuous(breaks = seq(2009,2017) ) + 
+    scale_y_continuous(breaks=scales::pretty_breaks(n = 20)) +
+    labs( title = "Percentual dos gastos da folha por Cargo e Vínculo" ) +
+    labs(x="") + labs(y="Gastos em milhões de R$") + labs(color = " ",shape = " ")+
+    theme(axis.text.x = element_text(angle = 70, hjust = 1)) +
+    theme(legend.position = "bottom")
+}
+
+#plot_gratificacoesBar(fullData)
+
+
+plot_gratificacoesBarCargo <- function(data,filter){
+  
+  d <- data[ data$Gratificação.Cargo.Comissionado.Função != 0,]
+  d['vg'] <- d$Gratificação.Cargo.Comissionado.Função
+  
+  meltData_a <- melt(d, id=c("ano" , "Cargo") , measure.vars = "vg")
+  wd_a <- dcast(meltData_a, ano + Cargo ~ variable , sum)
+  
+  #wd_a <- wd_a[with(wd_a, order(vg, -Cargo )), ]
+  
+  z <- dcast(meltData_a, ano ~ variable , sum )
+  z <- rename(z, c("vg"="total_ano"))
+  z <- merge(wd_a, z, by=c("ano","ano"))
+  z['percent'] <- z$Gratificação.Cargo.Comissionado.Função / z$total_ano
+  
+  if ( ! missing(filter) ){
+    z <- z[z$Vínculo != 'NAO SEI',]
+    z <- z[z$Vínculo != 'ESTATUTÁRIO' & ( z$Cargo == 'TÉCNICO ADMINISTRATIVO' | z$Cargo == 'PROFESSOR'),]
+  } 
+  
+  ggplot(z, aes(x=ano,y=vg/1e6) ) +
+    geom_bar(stat="identity",position="dodge", aes(fill = Cargo )) + 
+    #geom_bar(stat="identity",position="dodge", aes(fill = 'Total' )) +
+    scale_x_continuous(breaks = seq(2009,2017) ) + 
+    scale_y_continuous(breaks=scales::pretty_breaks(n = 20)) +
+    labs( title = "Percentual dos gastos da folha por Cargo e Vínculo" ) +
+    labs(x="") + labs(y="Gastos em milhões de R$") + labs(color = " ",shape = " ")+
+    theme(axis.text.x = element_text(angle = 70, hjust = 1)) +
+    theme(legend.position = "bottom")
+}
+
+#plot_gratificacoesBarCargo(fullData)
+
+
+plot_gratificacoes <- function(data,filter){
+  
+  d <- data[ data$Gratificação.Cargo.Comissionado.Função != 0,]
+  d['vg'] <- d$Gratificação.Cargo.Comissionado.Função
+  
+  meltData_a <- melt(d, id=c("ano", "Vínculo" , "Cargo") , measure.vars = "vg")
+  wd_a <- dcast(meltData_a, ano + Cargo + Vínculo ~ variable , sum)
+  
+  
+  z <- dcast(meltData_a, ano ~ variable , sum )
+  z <- rename(z, c("vg"="total_ano"))
+  z <- merge(wd_a, z, by=c("ano","ano"))
+  z['percent'] <- z$Gratificação.Cargo.Comissionado.Função / z$total_ano
+  
+  if ( ! missing(filter) ){
+    z <- z[z$Vínculo != 'NAO SEI',]
+    z <- z[z$Vínculo != 'ESTATUTÁRIO' & ( z$Cargo == 'TÉCNICO ADMINISTRATIVO' | z$Cargo == 'PROFESSOR'),]
+  } 
+  
+  ggplot(z, aes(x=ano,y=vg/1e6) ) +
+    geom_line(aes(color = interaction(Cargo,Vínculo)), size=1) + 
+    geom_point(aes(shape  = interaction(Cargo,Vínculo),color = interaction(Cargo,Vínculo)), size=3) + 
+    #geom_text(aes(label=as.integer(Total.Bruto/1e6)), vjust=1.5) +
+    scale_x_continuous(breaks = seq(2009,2017) ) + 
+    scale_y_continuous(breaks=scales::pretty_breaks(n = 20)) +
+    labs( title = "Percentual dos gastos da folha por Cargo e Vínculo" ) +
+    labs(x="") + labs(y="Gastos em milhões de R$") + labs(color = " ",shape = " ")+
+    theme(axis.text.x = element_text(angle = 70, hjust = 1)) +
+    theme(legend.position = "bottom")
+}
+
+#plot_gratificacoes(fullData)
