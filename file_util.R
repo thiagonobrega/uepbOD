@@ -22,6 +22,7 @@ read_data <- function(file){
   data$Total.Bruto =  as.numeric(lapply(as.character(data$Total.Bruto),fixVal))
   data$Descontos.Obrigatórios = as.numeric(data$Descontos.Obrigatórios)
   data$Total.Líquido = as.numeric(lapply(as.character(data$Total.Líquido),fixVal))
+  data$Gratificação.Cargo.Comissionado.Função = as.numeric(lapply(as.character(data$Gratificação.Cargo.Comissionado.Função),fixVal))
   
   return(data)
 }
