@@ -3,10 +3,12 @@ title: "Evolucao dos Gastos"
 author: "Thiago Nobrega"
 date: "May 21, 2017"
 output:
+  pdf_document:
+    toc: yes
   html_document:
+    fig_caption: yes
     theme: united
     toc: yes
-    fig_caption: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -277,10 +279,94 @@ for (gfc in unique(temp[temp$Cargo != 'PROFESSOR',]$grupo_fc)){
 }
 ```
 
-
-# Proximas analises
-
-Verificar onde estão a maioria dos comissionados
-
 # Conclusões
+
+O objetivo dessa análise era verificar se o gasto com pessoal estavam sendo mau empregados. Em resumo responder as seguintes perguntas;
+
+   * Existe um excesso de servidores não concursado consumindo boa parte do recurso da folha?
+   * Existe a distribuição anormal de funções gratificadas que comprometem de maneira grave o orçamento de pessoal?
+
+*Ao realizar as analises não percebi nenhum fato que pudesse justificar tamanha crise financeira.*
+
+O número de servidores **não concursados** é condizente (infelizmente) com a situação da universidade, onde vários cursos e campus foram abertos (fato que não foi acompanhado pela contratação de servidores).
+
+Quanto a distribuição de funções gratificadas, não vi percebi um comprometimento  da folha, que justifica-se o arroxo que passamos. 
+
+Em suma, para mim, os dados não demonstraram que o problema que esta na gestão de recurso por parte da Universidade. Percebi alguns fatos que podem ser otimizados, mas por não ser o escopo desse documento não irei tratar aqui.
+
+Dúvidas e Próximas AnálisesO objetivo dessa análise era verificar se o gasto com pessoal estavam sendo mau empregados. Em resumo responder as seguintes perguntas;
+
+   * Existe um excesso de servidores não concursado consumindo boa parte do recurso da folha?
+   * Existe a distribuição anormal de funções gratificadas que comprometem de maneira grave o orçamento de pessoal?
+
+*Ao realizar as analises não percebi nenhum fato que pudesse justificar tamanha crise financeira.*
+
+O número de servidores **não concursados** é condizente (infelizmente) com a situação da universidade, onde vários cursos e campus foram abertos (fato que não foi acompanhado pela contratação de servidores).
+
+Quanto a distribuição de funções gratificadas, não vi percebi um comprometimento  da folha, que justifica-se o arroxo que passamos. 
+
+Em suma, para mim, os dados não demonstraram que o problema que esta na gestão de recurso por parte da Universidade. Percebi alguns fatos que podem ser otimizados, mas por não ser o escopo desse documento não irei tratar aqui.
+
+#Dúvidas e Próximas Análises
+
+## Dúvidas
+
+*Q1. Mas o gasto com a folha dobrou de 2009 a 2017? Como você pode falar que não há problema ai?*
+
+Verdade, mas lembre que a inflação acumulada de 2009 a 2017 foi de 66,6% (Fonte (Banco Central do Brasil)[https://www3.bcb.gov.br/CALCIDADAO/publico/corrigirPorIndice.do?method=corrigirPorIndice]), sem conta o aumento do número de de professores e técnicos contratados para as expanções realizadas (abertura de campus e cursos).
+
+Assim contabilizando a inflação mais os servidores contratados esse aumento deveria ter sido de quase 3 vezes. Mas ainda assim alguem tem o gráfico da evolução da receita do estado nesse mesmo periodo para ver a evolução?
+
+*Q2. Você fala muito! Como eu posso vérificar o que você ta escrevendo ai?*
+
+Simples todo o códico fonte para gerar essas análises, bem como os dados e instruções de uso estão disponíveis no GitHub do projeto <>.
+
+Outro eu acho super valido outra pessoa averiguar tudo o que fiz, mas melhor ainda seria se alguém contribui-se com o projeto (com sugestões de análises, com código, etc).
+
+*Q3. Esses dados vêm de onde?*
+
+Todos os dados utilizados são públicos e estão disponíveis no site do portal da transparência da universidade, para mais informações sobre como os dados foram consolidados consultem a documentação do crawler.
+
+Pessoalmente acho que ainda somo pouco transparentes... Fiquem chocados a UFRN consegue ser mais transparente que nós, visitem o site da <http://dados.ufrn.br/> e verifiquem. 
+
+## Proximas análises
+
+Boa pergunta! Estou um pouco atarefado mas vocês podem realizar suas análises e as disponibilizarem no site do projeto que tal?
+
+
+Toda via estou com uma ideia de realizar um Hackton entre os alunos para comparar os dados da UEPB com outras universidades (UFCG,UFPB,UFRPE,IFPB,..), utilizando os dados do portal da trânsparencia do governo federal, o que vocês acham? Lembrando que para tal vou precisar de apoio de reitoria, do comando de greve e do DCE.
+
+
+Mas eu não sei programar, como posso contribuir? Simples posta a dúvida em algum grupo da UEPB e pede ajuda a quem sabe ;), talvez eu mesmo ajude a concretizar sua sugestão.
+
+## Dúvidas
+
+*Q1. Mas o gasto com a folha dobrou de 2009 a 2017? Como você pode falar que não há problema ai?*
+
+Verdade, mas lembre que a inflação acumulada de 2009 a 2017 foi de 66,6% (Fonte [Banco Central do Brasil](https://www3.bcb.gov.br/CALCIDADAO/publico/corrigirPorIndice.do?method=corrigirPorIndice)), sem conta o aumento do número de de professores e técnicos contratados para as expanções realizadas (abertura de campus e cursos).
+
+Assim contabilizando a inflação mais os servidores contratados esse aumento deveria ter sido de quase 3 vezes. Mas ainda assim alguem tem o gráfico da evolução da receita do estado nesse mesmo periodo para ver a evolução?
+
+*Q2. Você fala muito! Como eu posso vérificar o que você ta escrevendo ai?*
+
+Simples todo o códico fonte para gerar essas análises, bem como os dados e instruções de uso estão disponíveis no GitHub do projeto <>.
+
+Outro eu acho super valido outra pessoa averiguar tudo o que fiz, mas melhor ainda seria se alguém contribui-se com o projeto (com sugestões de análises, com código, etc).
+
+*Q3. Esses dados vêm de onde?*
+
+Todos os dados utilizados são públicos e estão disponíveis no site do portal da transparência da universidade, para mais informações sobre como os dados foram consolidados consultem a documentação do [crawler](https://github.com/thiagonobrega/uepbOD/blob/master/data/README.md)
+
+Pessoalmente acho que ainda somo pouco transparentes... Fiquem chocados a UFRN consegue ser mais transparente que nós, visitem o site da <http://dados.ufrn.br/> e verifiquem. 
+
+## Proximas análises
+
+Boa pergunta! Estou um pouco atarefado mas vocês podem realizar suas análises e as disponibilizarem no site do projeto que tal?
+
+
+Toda via estou com uma ideia de realizar um Hackton entre os alunos para comparar os dados da UEPB com outras universidades (UFCG,UFPB,UFRPE,IFPB,..), utilizando os dados do portal da trânsparencia do governo federal, o que vocês acham? Lembrando que para tal vou precisar de apoio de reitoria, do comando de greve e do DCE.
+
+
+Mas eu não sei programar, como posso contribuir? Simples posta a dúvida em algum grupo da UEPB e pede ajuda a quem sabe ;), talvez eu mesmo ajude a concretizar sua sugestão.
+
 
