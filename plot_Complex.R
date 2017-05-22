@@ -101,6 +101,7 @@ plot_folhaVsCargo_Quantitativo <- function(data){
   
   p2 <- ggplot(wd_a, aes(x=ano,y=Total.Bruto/1e6) ) +
       geom_bar(stat="identity",aes(color = Cargo ),fill = "transparent" ,alpha = 0.8,size=1) + 
+      geom_text(aes(label=as.integer(Total.Bruto/1e6),colour= Cargo), vjust=1.5) +
       scale_x_continuous(breaks = seq(2009,2017) ) + 
       labs( title = "Gastos com a folha por cargo" ) +
       labs(x="") + labs(y="Gastos em Milhões de R$") + 
@@ -192,7 +193,7 @@ plot_pecentualPorVinculo <- function(data,filter){
     geom_text(aes(label=as.integer(percent*100)), vjust=1.5) +
     scale_x_continuous(breaks = seq(2009,2017) ) + 
     scale_y_continuous(labels = scales::percent) +
-    labs( title = "Percentual dos gastos da folha por Vínculo" ) +
+    labs( title = "Gastos da folha por Vínculo" ) +
     labs(x="") + labs(y="") + 
     theme(axis.text.x = element_text(angle = 70, hjust = 1)) +
     theme(legend.position = "bottom")
@@ -222,7 +223,7 @@ plot_pecentualPorCargoVinculo <- function(data,filter){
     #geom_text(aes(label=as.integer(Total.Bruto/1e6)), vjust=1.5) +
     scale_x_continuous(breaks = seq(2009,2017) ) + 
     scale_y_continuous(breaks=scales::pretty_breaks(n = 20)) +
-    labs( title = "Percentual dos gastos da folha por Cargo e Vínculo" ) +
+    labs( title = "Gastos da folha por Cargo e Vínculo" ) +
     labs(x="") + labs(y="Gastos em milhões de R$") + labs(color = " ",shape = " ")+
     theme(axis.text.x = element_text(angle = 70, hjust = 1)) +
     theme(legend.position = "bottom")
@@ -321,7 +322,7 @@ plot_gratificacoesBar <- function(data,filter){
     #geom_bar(stat="identity",position="dodge", aes(fill = 'Total' )) +
     scale_x_continuous(breaks = seq(2009,2017) ) + 
     scale_y_continuous(breaks=scales::pretty_breaks(n = 20)) +
-    labs( title = "Percentual dos gastos da folha por Cargo e Vínculo" ) +
+    labs( title = "Gastos da folha por Cargo e Vínculo" ) +
     labs(x="") + labs(y="Gastos em milhões de R$") + labs(color = " ",shape = " ")+
     theme(axis.text.x = element_text(angle = 70, hjust = 1)) +
     theme(legend.position = "bottom")
@@ -355,7 +356,7 @@ plot_gratificacoesBarCargo <- function(data,filter){
     #geom_bar(stat="identity",position="dodge", aes(fill = 'Total' )) +
     scale_x_continuous(breaks = seq(2009,2017) ) + 
     scale_y_continuous(breaks=scales::pretty_breaks(n = 20)) +
-    labs( title = "Percentual dos gastos da folha por Cargo e Vínculo" ) +
+    labs( title = "Gastos da folha por Cargo e Vínculo" ) +
     labs(x="") + labs(y="Gastos em milhões de R$") + labs(color = " ",shape = " ")+
     theme(axis.text.x = element_text(angle = 70, hjust = 1)) +
     theme(legend.position = "bottom")
@@ -364,7 +365,7 @@ plot_gratificacoesBarCargo <- function(data,filter){
 #plot_gratificacoesBarCargo(fullData)
 
 
-plot_gratificacoes <- function(data,filter){
+plot_gratificacoesCargoVinculo <- function(data,filter){
   
   d <- data[ data$Gratificação.Cargo.Comissionado.Função != 0,]
   d['vg'] <- d$Gratificação.Cargo.Comissionado.Função
@@ -389,10 +390,102 @@ plot_gratificacoes <- function(data,filter){
     #geom_text(aes(label=as.integer(Total.Bruto/1e6)), vjust=1.5) +
     scale_x_continuous(breaks = seq(2009,2017) ) + 
     scale_y_continuous(breaks=scales::pretty_breaks(n = 20)) +
-    labs( title = "Percentual dos gastos da folha por Cargo e Vínculo" ) +
+    labs( title = "Gastos da folha por Cargo e Vínculo" ) +
     labs(x="") + labs(y="Gastos em milhões de R$") + labs(color = " ",shape = " ")+
     theme(axis.text.x = element_text(angle = 70, hjust = 1)) +
     theme(legend.position = "bottom")
 }
 
-#plot_gratificacoes(fullData)
+#plot_gratificacoesCargoVinculo(fullData)
+
+#funcao para agrupar os cargos
+agrupar_fxComissionada <- function(val) {
+  tks <- strsplit(val, " ")
+  return(tks[[1]][1])
+  
+}
+
+plot_gratificacoesTipo <- function(data,filter){
+  
+  d <- data[ data$Gratificação.Cargo.Comissionado.Função != 0,]
+  d['vg'] <- d$Gratificação.Cargo.Comissionado.Função
+  
+  meltData_a <- melt(d, id=c("ano", "Cargo" , "Cargo.Comissionado") , measure.vars = "vg")
+  wd_a <- dcast(meltData_a, ano + Cargo + Cargo.Comissionado ~ variable , sum)
+  
+  
+  z <- dcast(meltData_a, ano ~ variable , sum )
+  z <- rename(z, c("vg"="total_ano"))
+  z <- merge(wd_a, z, by=c("ano","ano"))
+  z['percent'] <- z$Gratificação.Cargo.Comissionado.Função / z$total_ano
+  
+  if ( ! missing(filter) ){
+    z <- z[z$Vínculo != 'NAO SEI',]
+    z <- z[z$Vínculo != 'ESTATUTÁRIO' & ( z$Cargo == 'TÉCNICO ADMINISTRATIVO' | z$Cargo == 'PROFESSOR'),]
+  } 
+  
+  z['grupo_fc'] <-as.character(lapply(as.character(z$Cargo.Comissionado),agrupar_fxComissionada))
+  
+  z$grupo_fc <- reorder(z$grupo_fc, z$vg)
+  z$grupo_fc <- factor(z$grupo_fc, levels=rev(rev(levels(z$grupo_fc))) )
+  
+  ggplot(z, aes(x=ano,y=vg/1e6) ) +
+    geom_bar(stat="identity", aes(fill = grupo_fc )) + 
+    #geom_text(aes(label=as.integer(Total.Bruto/1e6)), vjust=1.5) +
+    scale_x_continuous(breaks = seq(2009,2017) ) + 
+    scale_y_continuous(breaks=scales::pretty_breaks(n = 10)) +
+    labs( title = "Gastos com funções gratificados por Cargo Comissionado" ) +
+    labs(x="") + labs(y="Gastos em milhões de R$") + labs(color = " ",fill = " ")+
+    theme(axis.text.x = element_text(angle = 70, hjust = 1)) +
+    theme(legend.position = "bottom") + 
+    guides(fill = guide_legend(ncol = 3))
+}
+
+#plot_gratificacoesTipo(fullData[fullData$Cargo == 'PROFESSOR',])
+#plot_gratificacoesTipo(fullData[fullData$Cargo != 'PROFESSOR',])
+
+plot_gratificacoesTipoDetalhe <- function(data,filter){
+  
+  d <- data[ data$Gratificação.Cargo.Comissionado.Função != 0,]
+  d['vg'] <- d$Gratificação.Cargo.Comissionado.Função
+  
+  meltData_a <- melt(d, id=c("ano", "Cargo" , "Cargo.Comissionado") , measure.vars = "vg")
+  wd_a <- dcast(meltData_a, ano + Cargo + Cargo.Comissionado ~ variable , sum)
+  
+  #wd_a <- wd_a[with(wd_a, order(vg, Cargo.Comissionado)), ]
+  
+  z <- dcast(meltData_a, ano ~ variable , sum )
+  z <- rename(z, c("vg"="total_ano"))
+  z <- merge(wd_a, z, by=c("ano","ano"))
+  z['percent'] <- z$Gratificação.Cargo.Comissionado.Função / z$total_ano
+  
+  z$Cargo.Comissionado <- reorder(z$Cargo.Comissionado, z$vg)
+  z$Cargo.Comissionado <- factor(z$Cargo.Comissionado, levels=rev(rev(levels(z$Cargo.Comissionado))) )
+  
+  if ( ! missing(filter) ){
+      titulo <- paste("Gastos com funções gratificados para",filter)
+  } else {
+    titulo <- "Gastos com funções gratificados"
+  }
+  
+  ggplot(z, aes(x=ano,y=vg/1e3) ) +
+    geom_bar(stat="identity", aes(fill = Cargo.Comissionado )) +
+    scale_x_continuous(breaks = seq(2009,2017) ) + 
+    scale_y_continuous(breaks=scales::pretty_breaks(n = 10)) +
+    labs( title = titulo ) +
+    labs(x="") + labs(y="Gastos em milhares (1e3) de R$") + labs(color = " ",shape = " " , fill="")+
+    theme(axis.text.x = element_text(angle = 70, hjust = 1)) +
+    theme(legend.position = "bottom") + 
+    guides(fill = guide_legend(ncol = 3))
+}
+
+#fullData['grupo_fc'] <-as.character(lapply(as.character(fullData$Cargo.Comissionado),agrupar_fxComissionada))
+#temp <- fullData[complete.cases(fullData$grupo_fc),]
+
+#for (gfc in unique(temp[temp$Cargo == 'PROFESSOR',]$grupo_fc)){
+#  print(plot_gratificacoesTipoDetalhe(temp[(temp$Cargo == 'PROFESSOR') & (temp$grupo_fc == gfc),]))
+#}
+
+#for (gfc in unique(temp[temp$Cargo != 'PROFESSOR',]$grupo_fc)){
+#  print(plot_gratificacoesTipoDetalhe(temp[(temp$Cargo != 'PROFESSOR') & (temp$grupo_fc == gfc),]))
+#}

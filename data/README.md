@@ -31,26 +31,26 @@ O gráfico abaixo ilustra como funciona do crawler.
 Para cada mês é gerado um arquivo *csv* 
 
    - "X" : identificador único (gerado pelo crawler)
-   - "Matrícula"
-   - "Cargo"
-   - "Função"
-   - "Vínculo"
-   - "Escolaridade"
+   - "Matrícula" : Matrícula do servidor
+   - "Cargo" : PROFESSOR, TÉCNICO ADMINISTRATIVO
+   - "Função" : 305 Valóres distindos (e.g. Professor Adjunto I,AUXILIAR DE LABORATÓRIO DE ANÁLISES FÍSICO-QUÍMICAS, entre outros)
+   - "Vínculo":  CEDIDO, COMISSIONADO, ESTATUTÁRIO, NAO SEI ,PRESTADOR DE SERVIÇO e TEMPORÁRIO
+   - "Escolaridade" :  DOUTOR, ENSINO ,FUNDAMENTAL, ENSINO FUNDAMENTAL INCOMPLETO, ENSINO MÉDIO, ESPECIALISTA, entre outros.
    - "Tempo.de.Serviço"
-   - "Cargo.Comissionado"
-   - "Gratificação.Cargo.Comissionado.Função"
-   - "Mês.de.referência"
-   - "Remuneração"
-   - "Vantagens.Pessoais"
+   - "Cargo.Comissionado" : O cargo da função gratificada
+   - "Gratificação.Cargo.Comissionado.Função" :Valor da Função de gratificada
+   - "Mês.de.referência" : 
+   - "Remuneração" :
+   - "Vantagens.Pessoais" : 
    - "Total.Vantagens.Pessoais" : Removi a descrição e somei as Vantagens Pessoais
-   - "Vantagens.Transitórias"
+   - "Vantagens.Transitórias" :
    - "Total.Vantagens.Transitorias" : Removi a descrição e somei as Vantagens Transitorias
-   - "Terço.de.Férias"
-   - "Abono.de.Permanência"
-   - "Total.Bruto"
-   - "Descontos.Obrigatórios"
-   - "Total.Líquido"
-   - "Lotação"
+   - "Terço.de.Férias" : 
+   - "Abono.de.Permanência" :
+   - "Total.Bruto" : 
+   - "Descontos.Obrigatórios" :
+   - "Total.Líquido": 
+   - "Lotação":
    - "mes" :  mês
    - "ano" : ano
 

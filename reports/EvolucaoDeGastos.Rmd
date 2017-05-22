@@ -1,10 +1,12 @@
 ---
 title: "Evolucao dos Gastos"
 author: "Thiago Nobrega"
-date: "May 17, 2017"
-html_document:
-    toc: true
+date: "May 21, 2017"
+output:
+  html_document:
     theme: united
+    toc: yes
+    fig_caption: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -13,6 +15,13 @@ library(ggplot2)
 source('../file_util.R', encoding="utf-8")
 source('../plot_Complex.R', encoding="utf-8")
 knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+
+knitr::knit_hooks$set(htmlcap = function(before, options, envir) {
+  if(!before) {
+    paste('<p class="caption">',options$htmlcap,"</p>",sep="")
+    }
+    })
 ```
 
 ```{r load_data, include=FALSE}
@@ -39,105 +48,239 @@ for (name in files[2:length(files)]) {
 }
 ```
 
-Para melhor compreender/auditar os dados capturados pelo [crawller](https://github.com/thiagonobrega/uepbOD), foram criados graficos com o intuido de :
+# Introdução
+
+Muito se aventa que a raiz da crise financeira da Universidade Estadual da Paraíba (UEPB) são os gastos irresponsáveis com a folha de pagamento, alguns falam que a universidade é um cabide de emprego para quem a administra, outros falam que as funções gratificadas são dadas em ambulância.
+
+Diante dessas afirmações resolvi realizar uma auditoria independente para verificar se realmente o problema realmente está na má gestão da folha da UEPB. O primeiro passo foi desenvolver um software para capturar os dados do portal da transparência e armazená-los em um formato que permite-se a analise (para mais informação acesse o site do [crawler](https://github.com/thiagonobrega/uepbOD/blob/master/data/README.md)), ou seja todos os dados utilizados nesse documento são *público* (apenas os coletei e os armazenei em um formato aberto).
+
+Este documento está divido em 4 seções. Na primeira seção é explicado a motivação para este documento, seguida pelos objetivos da análise (Seção 2). A seção 3 analisa os dados da folha de pagamento e por fim a seção 4 com as conclusões das análises.
+
+# Objetivos
+
+O objetivo desse documento e realizar uma análise nos gastos da folha de pagamento para avaliar se;
+
+   * Existe um excesso de servidores não concursado consumindo boa parte do recurso da folha?
+   * Existe a distribuição anormal de funções gratificadas que comprometem de maneira grave o orçamento de pessoal?
+
+# Metodologia
+
+A estas perguntas levantadas na seção anterior os dados da folha foram agrupados por ano, ou seja o valor recebido por cada servidor foi somado ao longo dos anos, e foram levantando os seguintes pontos de avaliação:
 
  * Avaliar os gastos da folha ao longo dos anos (2009 a 2017)
  * Avaliar o quantitativo de servidores ao longo dos anos (2009 a 2017)
  * AValiar quanto da folha é gasto com pessoal concursado e não concursado
-    - De modo global, Cargo e Vínculo 
+ * Avaliar os gastos por cargo, vínculo e Cargo Vs. Vínculo
+ * Avaliar os gastos com funções gratificadas ao longo do tempo
+    - De modo global, Cargo e Vínculo
 
-## Graficos
+Para mais informações sobre o que representa cada critério de avaliação (Cargo,Vinculo,...) consultar a documentação do [crawler](https://github.com/thiagonobrega/uepbOD/blob/master/data/README.md).
 
-Todos os gráficos foram construidos sobre os valores anuais, ou seja os dados diponibilizados no meu [github](https://github.com/thiagonobrega/uepbOD/tree/master/data) foi consolidado por ano, por isso todos os graficos mostram que 2017 teve um
+Todos os [dados](https://github.com/thiagonobrega/uepbOD/tree/master/data) e o [código fonte](https://github.com/thiagonobrega/uepbOD) para realizar estas analises estão disponiveis no github do projeto. Desse modo fiquem livre para enviar uma correções ou contribuição ;)
 
-São os dados anuais
-Metodologia
+# Análise dos dados
 
-###  Gastos com a Folha versus o quantitativo da servidores
+Nesta seção serão apresentadas as análises realizadas para tentar responder as questões levantadas na seção anterior. Estas foram divididas nos seguintes grupos:
 
-O grafico abaixo ilustra a evolução da folha frente o número de servidores (estatutarios, comissionados, cedidos,...) ao longo dos anos.
+   - Evolução dos gastos e número de servidores
+   - Evolução dos gastos por cargo
+   - Evolução dos gastos por Vínculo
+   - Evolução dos gastos por funções gratificadas
 
-```{r}
+## Evolução dos gastos e número de servidores
+
+O gráfico abaixo ilustra a evolução da folha frente o número de servidores (estatutários, comissionados, cedidos,...) ao longo dos anos.
+
+```{r, htmlcap="Figura 1. Gráfico de gastos e quantitativo de servidores"}
 plot_QuantidadeServidoresGastoBrutoAnual(fullData)
 ```
 
-Percebe-se que de 2013 a 2015 o número de servidores foi drasticamente reduzido (de 2.895 para 2.527). Com tudo do ano de 2013 para o ano de 2014 é possível observar um aumento consideravel na folha (milhões). Este comportamente é justificado por progressões e a implantação dos vales (alimentação e saúde).
+Percebe-se que de 2013 a 2015 o número de servidores foi drasticamente reduzido (de 2.895 para 2.527). Com tudo do ano de 2013 para o ano de 2014 é possível observar um aumento considerável na folha (milhões), este comportamento pode ser justificado por progressões e a implantação dos vales (alimentação e saúde).
 
-###  Gastos com a Folha por Cargo
+## Evolução dos gastos por cargo
 
-Para um melhor detalhamento da folha plotei um grafico do número de servidores por cargo (Técnicos Administrativos vs. Professores).
+Outra maneira de visualizar o custo dos servidores é separar por Cargos (Professores e Técnicos Administrativos), desse modo a Figura 2 ilustra quanto foi gastos por cargo (Técnicos Administrativos vs. Professores) ao longo dos anos.
 
-```{r}
+```{r, htmlcap="Figura 2. Gráfico com os gastos por Cargo. Em azul técnicos administrativos e em vermelhor professores."}
 plot_folhaVsCargo(fullData)
 ```
 
-Desse modo podemos constatar que os gastos por cargo acompanham a tendecia do grafico de anterior, ressaltando que o maior impacto vem de gastos com o pagamento da folha docente (fato já esperado).
+A figura acima ilustra a tendência da Figura 1, ressaltando que o maior impacto vem de gastos com o pagamento da folha docente (fato já esperado).
 
-### Gastos com a Folha por Cargo com o quantitativo
+Para compreender melhor esses gastos as subseções abaixo utilizaram mais informações para um melhor detalhamento.
 
-Para entender a evolução dos gastos, foi gerado um grafico ilustrando o quantitativo de servidores por cargo ao longo dos anos. No gráfico abaixo é possivel verificar o gastos (em milhões) por cargo nas barras verticais, já o quantitativo de servidores por cargo é indicado pelas linhas e pontos (vermelho para os docentes e azul para os técnicos administrativos).
+### Evolução dos gastos por Cargo vs. número de servidores
 
-```{r}
+Para entender a evolução dos gastos, a Figura 3 ilustra o quantitativo de servidores por cargo ao longo dos anos. No gráfico abaixo é possível verificar o gastos (em milhões) por cargo nas barras verticais, já o quantitativo de servidores por cargo é indicado pelas linhas e pontos (vermelho para os docentes e azul para os técnicos administrativos).
+
+```{r, htmlcap="Figura 3. Gráfico com os gastos (barras) e o quantitativo de servidores (linhas e pontos)"}
 plot_folhaVsCargo_Quantitativo(fullData)
 ```
 
-O gráfico acima ilustra que; 
- * o número de professores vem dimuindo (apartir do ano de 2010), com execeção do ano de 2016 que teve um aumento em relação ao ano de 2015 (acredito que em razão do campus de araruna)
- * o número de técnicos segue uma tendecia (tendecia não esta plotada) de aumento do número de técnicos desde 2009 (fato que julgo necessário, visto temos bem menos técnicos as demais universidade do mesmo porte)
- * mesmo com a diminuição do quantitativo de servidores (docentes + técnicos) os gastos continuam a aumentar. Fato natural pois as pessoas se qualificam e progridem na carreira.
+A figura acima ilustra que:
 
-O grafico abaixo ilustra os gastos/quantitativos com os servidores estátutarios por classe.
+   - o número de professores vem diminuindo (apartir do ano de 2010), com execeção do ano de 2016 que teve um aumento em relação ao ano de 2015 (acredito que em razão do campus de Araruna)
+   - o número de técnicos segue uma tendência (não plotada) de aumento do número de técnicos desde 2009 (fato que julgo necessário, visto temos bem menos técnicos as demais universidade do mesmo porte)
+   - mesmo com a diminuição do quantitativo de servidores (docentes + técnicos) os gastos continuam a aumentar. Fato natural, pois, as pessoas se qualificam e progridem na carreira.
 
-```{r}
+
+O grafico abaixo ilustra os gastos/quantitativos com os servidores *estátutarios* por classe.
+
+```{r, htmlcap="Figura 4. Gráfico com os gastos (barras) e o quantitativo de servidores (linhas e pontos) para os servidores concursados"}
 plot_custoCargoVinculoEstatutario_Quantitativo(fullData)
 ```
 
-E como se pode perceber ... (concluir depois)
 
-### Gastos da Folha por Vínculo
+### Evolução dos gastos por Vínculo
 
-Antes de iniciar a descrever esta analise gostaria de lembrar que existe um vínculo "NAO SEI", este vinculo *eu* criei para os servidores que não conseguia relacionar os dados da folha com o dado de lotação. Esta relação nao foi possivel pois os dados disponiveis (no portal da transparencia) reflete apenas o momento, ou seja como eu realizei a captura dos dados em 2017 não tinha disponivel os dados dos anos anteriores. Estes servidores acredito que sejam servidores hoje aposentados, temporarios, comissionados e prestadores de serviços. Para mais informações leiam sobre o [crawller](https://github.com/thiagonobrega/uepbOD) e consultem os dados brutos para comprovarem o que estou falando.
+Antes de iniciar a descrever esta analise é importante lembrar que existe um vínculo "NAO SEI", este vínculo foi criado pelo crawler para os servidores que não conseguia relacionar os dados da folha com o dado de lotação (por serem dados antigos é não estão mais disponíveis), estes vínculo foi colocado para servidores que se aposentaram, temporários, comissionados e prestadores de serviço. Para mais informações leiam sobre o [crawler](https://github.com/thiagonobrega/uepbOD/blob/master/data/README.md) e consultem os dados brutos para verificarem possíveis erros.
 
-Feito o preâmbulo sobre os dados vamos discutir uma questão que muito e discudida no achismo, os gastos com servidores não estatutarios.
+Feito o preâmbulo sobre os dados vamos discutir uma questão que muito e discutida de modo empírico e com sentimentos (sem nenhum dado concreto).  Nesta seção será discutido os gastos com servidores não estatutários comparados com os servidores estatutários.
 
-Em diversos jornais e grupos na internet se fale que o a universidade é um cabide de empregos, onde a quantidade de servidores comissionados/apradinhados que consomem grande parte do seu orçamento. Esta seção mostra de formal cabal que o problema não reside nos temporarios/comissionados. O gráfico abaixo ilustra o percentual de gastos por vínculo.
+Observando apenas as figuras 4 e 5 pode-se inferir um pouco sobre os gastos por vínculo. Mas para uma melhor compressão desses gastos a Figura 5 descreve de maneira mais detalhada esses gastos.
 
-```{r}
+
+```{r, htmlcap="Figura 5. Gráfico com percentual de gastos por vínculo."}
 plot_pecentualPorVinculo(fullData)
 ```
 
-Podemos perceber que a maior parte dos gasto da folha é com servidores estaturários. Mas alguem pode questionar:
+A Figura 5, mostra os gastos (percentuais) por vínculos (cedido, comissionados, prestador de serviço, temporário, não sei e estatutário) por meio de linhas e pontos ao longo dos anos. Assim observando percebe-se que a maior parte dos gastos da folha é com servidores estatutários e a medida que nos aproximamos de 2017 este valor sempre aumenta (em 2009 era 60% e em 2017 é de 85%), revelando uma tendência de substituição de postos comissionados por concursados.
 
-*- mas no ano de 2009 37% dos gastos foram com o vínculo "NAO SEI"!*
+Mas mesmo assim tem é possível levantar o seguinte questionamento:
+
+*- mas no ano de 2009 37% dos gastos foram com o vínculo "NAO SEI", e nos anos subsequentes esse valor continua alto até 2017!*
 
 Sim isso é verdade, mas lembrando que: 
- * Entre 2009 e 2012 o gastos com a folha eram bem menor (quase metade) e o número de servidores estaturarios era bem menor
- * Que a categoria não sei contempla servidores estaturaios aposentados, professores temporarios, prestadores de serviço, etc ...
- * A medida que os dados ficam disponiveis (2016) este valor vai para 0
 
-Mas enfim quanto gastamos com prestadores de serviços, comissionados e professores temporários? 
+   - Entre 2009 e 2012 o gastos com a folha eram bem menor (quase metade) e o número de servidores estatutários era bem menor
+   - Que a categoria não sei contempla servidores estatuários aposentados, professores temporários, prestadores de serviço, etc ...
+   - A medida que os dados ficam disponíveis (2016) este valor tende para 0.
 
-```{r}
+
+A Figura 5 não permite que os dados dos servidores não estatutarios sejam visualizados de maneira correta. Para solucinonar este problema A Figura 6 exibe apenas os dados desses servidores.
+
+```{r, htmlcap="Figura 6. Gráfico com percentual de gastos para servidores não efetivos. O vínculo não sei foi removido devido a incerteza que o dado gera"}
 plot_pecentualPorVinculo(fullData,True)
 ```
 
-Para responder esta pergunta vamos observar os anos de 2016 e 2017, onde os dados ficam mais confiaveis para esse tipo de analise:
- * 2016: 5% docentes temporários + 4% de prestadores de serviço = 9%*
- * 2017: 8% docentes temporários + 5% de prestadores de serviço = 13%*
+Observando os anos de 2016 e 2017, onde os dados ficam mais confiaveis para esse tipo de analise, temos que em:
+
+   * *2016*: 5% docentes temporários + 4% de prestadores de serviço = 9%
+   * *2017*: 8% docentes temporários + 5% de prestadores de serviço = 13%
  
- Ou seja 10% ao ano e gasto com servidores não concursados. 
+
+Ou seja em média 10%/ano do orçamento com pssoal é gasto gasto com servidores não concursados. 
  
  **- Mas esse valor é muito elevado!**
  
- Sim é, mas considerando que abrimos um campus novo (Araruna) e poucos docentes e técnicos administrativos foram contratado, não posso afirmar que este valor é absurdo ou inviabiliza a universidade.
+ Sim é, mas considerando que a universidade abriu um campus novo (Araruna) e poucos docentes e técnicos administrativos foram contratado, não posso afirmar que este valor é absurdo ou inviabiliza a universidade.
 
-* Os demais vínculos não chegam a 1% e por isso não foram computados
+Então desse modo podemos argumentar que as hipóteses levantadas por alguns jornais e grupos políticos que afirma que a universidade é um cabide de empregos, onde a quantidade de servidores comissionados/apadrinhados que consomem grande parte do seu orçamento. 
 
-### Gastos da Folha por Vínculo
+PS: Até fiquei com vontade para verificar de realizar esse estudo em alguns órgãos/autarquia estadual para comparar e ver como é essa relação por lá. Como será essa relação nos hospitais de trauma? 
 
-## Proximas analises
+
+## Evolução dos gastos por funções gratificadas
+
+O objetivo desta seção é de responder a um único questionamento. *É verdade que na UEPB as gratificações correm soltas?*
+
+Para tentar responder a este questionamento vamos começar observando a figura 7,  que ilustra de uma maneira macro, quanto foi gasto com funções gratificadas (para técnicos administrativos e docentes) ao longo dos anos. 
+
+```{r, htmlcap="Figura 7. Gráfico de gastos e quantitativo de servidores"}
+plot_gratificacoesBar(fullData)
+```
+
+Observando a gráfico acima percebe-se que de 2009 a 2012 os gastos com funções gratificadas quase dobraram, que no ano de 2013 teve uma queda abrupta seguido de um leve crescimento até o presente ano.
+
+Correlacionado os gastos da folha percebemos que o percentual com funções gratificadas caiu de aproximadamente 5.6% em 2012 para algo próximo de 3% em 2016 e 2017. 
+
+*Mas porque antes de 2012 se gastava tanto com funções gratificadas?*
+
+Para responder esta pergunta vamos observar o gráfico abaixo (Figura 8), onde é possível perceber que os gastos com funções gratificadas para técnicos administrativo, até o ano de 2012, era bem maior que nos anos subsequentes.
+
+```{r, htmlcap="Figura 8. Gráfico dos gastos com funções gratificadas por cargo."}
+plot_gratificacoesBarCargo(fullData)
+```
+
+A explicação para tal fato só veio ao conversar com um amigo que já foi contratado (hoje ele é concursado) me explicou que até antes de 2012 os contratados recebiam um valor bem baixo (menor que o salário mínimo), e a função gratificada era utilizado para compensar este fato, e somente após 2012 a resolução foi revista e vencimento básico foi reajustado.
+
+*Repare que este fato explica parte do aumento dos gastos na folha nas Figuras 1,2 e 3 no ano de 2013.*
+
+**Mas será que mesmo após os ajustes de 2012 as funções gratificadas são pagas para servidores não concursados?**
+
+Para responder a esta pergunta observem a Figura 9, onde as linhas e pontos mostram as para quem são pagas estas funções.
+
+```{r, htmlcap="Figura 9. Gráfico dos gastos com funções gratificadas por cargo e vínculo."}
+plot_gratificacoesCargoVinculo(fullData)
+```
+
+Uma maneira interessante de ler a figura 9 é dividi-la em dois momentos, antes de 2012 e de 2013 em diante:
+
+   - Antes de 2012 podemos observar que servidores não concursados (Técnicos administrativos e Professores temporários)* recebiam uma boa parte das funções gratificadas, fato este que reforça a explicação do meu amigo.
+   - Apôs 2013 os técnicos administrativos estatutários (em verde claro com +) passaram a ser o segundo grupo que mais recebe funções gratificadas.
+
+A única coisa que nunca mudou é que os professores estatutários sempre representaram o maior valor de gastos com funções gratificadas.
+
+* Para mais informaçõe sobre o vínculo 'não sei' acessem o site que explica como os dados foram capturados <https://github.com/thiagonobrega/uepbOD/blob/master/data/README.md>
+
+
+### Quais são as funções gratificadas da UEPB?
+
+Esta subseção tem o objetivo de mostrar quem recebe estas funções gratificadas! 
+
+Para facilitar a visualização dos dados os servidores foram divididos por cargos (Professores e Técnicos Administrativos) e um algoritmo agrupou as funções por grupo, dado que mais de 100 funções seria bem complicado a visualização esse momento, tomando como exemplo os chefes de departamento, centro e cursos foram agrupados na categoria CHEFE.
+
+Para os **professores** o algoritmo gerou 13 categorias e o resultado pode ser visto no gráfico abaixo.
+
+```{r, htmlcap="Figura 10. Funções gratificadas para docentes"}
+plot_gratificacoesTipo(fullData[fullData$Cargo == 'PROFESSOR',])
+```
+
+Para os professores o impacto é maior para coordenares, chefes, pró-reitores e diretores.
+
+Para os **Técnicos Administrativos** o algoritmo gerou 09 categorias e o resultado pode ser visto no gráfico abaixo.
+
+```{r, htmlcap="Figura 11. Funções gratificadas para docentes"}
+plot_gratificacoesTipo(fullData[fullData$Cargo != 'PROFESSOR',])
+```
+
+Para os Técnicos Administrativos o impacto é maior para assessor, secretário e pró-reitores. 
+
+Pessoalmente percebo que algumas coisas podem ser mudadas, acho que algumas funções poderiam ser distribuídas de maneira melhor (para quem realmente trabalha) mas sendo bem sincero *não vi nenhum número absurdo que inviabilize a folha de pagamento* com o pagamento de funções gratificados (pagamos na média algo perto de 2% a 3%).
+
+As próximas subseções detalham as funções por cargo (Professores e Técnicos). Não vou explicar as seções abaixo, mas os gráficos são bem diretos. ;)
+
+PS: A categoria NA, presentes para professores e técnicos, e quando o dado é muito antigo ou a infomação estava disponivel no portal da transparência.
+PPS : Os Assessores tiveram um impacto maior em virtude do fato explicado na seção anterior.
+
+#### Docentes
+
+Nesta seção teremos apenas os gráficos detalhados (sem uma descrição) das funções gratificadas recebidas pelos professores.
+
+```{r fig.height = 8, fig.width = 10, fig.align = "center"}
+fullData['grupo_fc'] <-as.character(lapply(as.character(fullData$Cargo.Comissionado),agrupar_fxComissionada))
+temp <- fullData[complete.cases(fullData$grupo_fc),]
+
+for (gfc in unique(temp[temp$Cargo == 'PROFESSOR',]$grupo_fc)){
+  print(plot_gratificacoesTipoDetalhe(temp[(temp$Cargo == 'PROFESSOR') & (temp$grupo_fc == gfc),],gfc))
+}
+```
+
+
+#### Técnicos Administrativos
+
+Nesta seção teremos apenas os gráficos detalhados (sem uma descrição) das funções gratificadas recebidas pelos Técnicos Administrativos.
+
+```{r fig.height = 8, fig.width = 10, fig.align = "center"}
+for (gfc in unique(temp[temp$Cargo != 'PROFESSOR',]$grupo_fc)){
+  print(plot_gratificacoesTipoDetalhe(temp[(temp$Cargo != 'PROFESSOR') & (temp$grupo_fc == gfc),]))
+}
+```
+
+
+# Proximas analises
 
 Verificar onde estão a maioria dos comissionados
 
-## Conclusões
+# Conclusões
 
