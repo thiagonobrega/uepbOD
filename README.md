@@ -27,5 +27,6 @@ Para poder realizar análises mais complexo sobre a parte academica da universid
 ## Como posso ajudar?
 
 Se você é um craque em programação ou sabe usar bem o Excel você pode contribuir realizando suas análises e compartilhando aqui no projeto.
+
 Mas se você não sabe utilizar essas ferramentas, você também pode ajudar! Colabore pedindo que mais dados sejam disponibilizados (no modelo que a UFRN disponibiliza), outro modo de ajudar e validando as análises publicadas.
 
