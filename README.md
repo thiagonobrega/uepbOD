@@ -12,6 +12,17 @@ Bem o código e dados estão aqui. Para acessar as análises clique em dos links
 
 1 - [Como os dados de gastos com pessoal foram capturados](data/README.md)
 
+## O que mais este projeto pretende fazer?
+
+Ainda podemos utilizar a base de dados do SAGRE e portal da tranparência do Governo Federal para comparar como gastos ,com licitações e pessoal, da univesidade com outros orgãos do estado e até mesmo outras universidades. Essa comparação possbilitaria criar um becnhmark (diagnostico) da universidade como um todo.
+   
+Este projeto gostaria de ter dados sobre os:
+
+   * Alunos: Informações como notas, quantas e quais cursos o aluno cursou poderiam ser utilizadas para apontar gargalos nos cursos.
+   * Projetos de exteção: qual o público desses projetos, o impacto que ele teve.
+   * Pesquisas : como estão as pesquisas da universidade
+
+Para poder realizar análises mais complexo sobre a parte academica da universidade.
 
 ## Como posso ajudar?
 
