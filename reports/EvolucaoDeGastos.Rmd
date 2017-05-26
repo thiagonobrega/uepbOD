@@ -2,8 +2,10 @@
 title: Análise da evolucao dos gastos com pessoal da Universidade Estadual da Paraíba
   ao longo dos anos
 author: "Thiago Nobrega"
-date: "May 22, 2017"
+date: "May 30, 2017"
 output:
+  pdf_document:
+    toc: yes
   html_document:
     fig_caption: yes
     theme: united
@@ -11,8 +13,6 @@ output:
     toc_float:
       collapsed: no
       smooth_scroll: yes
-  pdf_document:
-    toc: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -82,7 +82,11 @@ A estas perguntas levantadas na seção anterior os dados da folha foram agrupad
 
 Para mais informações sobre o que representa cada critério de avaliação (Cargo,Vinculo,...) consultar a documentação do [crawler](https://github.com/thiagonobrega/uepbOD/blob/master/data/README.md).
 
-Todos os [dados](https://github.com/thiagonobrega/uepbOD/tree/master/data) e o [código fonte](https://github.com/thiagonobrega/uepbOD) para realizar estas analises estão disponiveis no github do projeto. Desse modo fiquem livre para enviar uma correções ou contribuição ;)
+Todos os [dados](https://github.com/thiagonobrega/uepbOD/tree/master/data) e o [código fonte](https://github.com/thiagonobrega/uepbOD) para realizar estas analises estão disponiveis no github do projeto.
+
+*Outro ponto importante é que todas as análises foram realizadas sobre o Total Líquido recebito pelos servidores, sem considerar a contribuição patronal feita pela universidade.* ___Em outras palavras o valor executado será um pouco maior em virtude da contribuição patronal (que não esta disponivel no contracheque).___
+
+Desse modo fiquem livre para enviar uma correções ou contribuição ;)
 
 # Análise dos dados
 
@@ -326,7 +330,7 @@ Pessoalmente acho que ainda somo pouco transparentes... Fiquem chocados a UFRN c
 Boa pergunta! Estou um pouco atarefado mas vocês podem realizar suas análises e as disponibilizarem no site do projeto que tal?
 
 
-Toda via estou com uma ideia de realizar um Hackton entre os alunos para comparar os dados da UEPB com outras universidades (UFCG,UFPB,UFRPE,IFPB,..), utilizando os dados do portal da trânsparencia do governo federal, o que vocês acham? Lembrando que para tal vou precisar de apoio de reitoria, do comando de greve e do DCE.
+Toda via estou com uma ideia de realizar um HAckfest entre os alunos para comparar os dados da UEPB com outras universidades (UFCG,UFPB,UFRPE,IFPB,..), utilizando os dados do portal da trânsparencia do governo federal, o que vocês acham? Lembrando que para tal vou precisar de apoio de reitoria, do comando de greve e do DCE.
 
 
 Mas eu não sei programar, como posso contribuir? Simples posta a dúvida em algum grupo da UEPB e pede ajuda a quem sabe ;), talvez eu mesmo ajude a concretizar sua sugestão.
