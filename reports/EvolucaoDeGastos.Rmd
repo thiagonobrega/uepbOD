@@ -101,7 +101,11 @@ Alguns valores apresentados nesse documento são divergentes a dos apresentados 
 
 Novamente a diferença entre o quantitativo de servidores se da por duas razões;
 
+<<<<<<< HEAD
    1. O problema de como os dados do vínculo do servidores é capturado (detalhado no site do [crawler](https://github.com/thiagonobrega/uepbOD/blob/master/data/README.md)), que faz com que professores que se aposentaram e servidores temporarios sejam classificados com o vínculo 'não sei'
+=======
+   1. O problema de como os dados do vínculo do servidores é capturado (detalhado no site do [crawller](https://github.com/thiagonobrega/uepbOD/blob/master/data/README.md)), que faz com que professores que se aposentaram e servidores temporarios sejam classificados com o vínculo 'não sei'
+>>>>>>> 3137a35bddf5e03f9c470bf20eecb0559851bfd8
    2. O quantitativo diverge principalmente pelo metodo de contagem, no [portal da transparência](http://transparencia.uepb.edu.br/download/arquivos_diversos/quadro-de-servidores.pdf) o quantitativo reflete o número de servidores em Dezembro (me parece que é o modo contabil, correto, de se calcular isso). Porem nesse documento é contado o numero de servidores que trabalharam durante o ano, ou seja se uma pessoa e contrata por 1 dia no ano ele será contabilizado
 
 Desse modo essas divergências não representam um risco a validade das análises aqui realizadas. Refletem apenas maneiras distintas de se contar e calcular.
