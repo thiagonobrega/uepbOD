@@ -4,8 +4,6 @@ title: Análise da evolucao dos gastos com pessoal da Universidade Estadual da P
 author: "Thiago Nobrega"
 date: "May 30, 2017"
 output:
-  pdf_document:
-    toc: yes
   html_document:
     fig_caption: yes
     theme: united
@@ -13,6 +11,8 @@ output:
     toc_float:
       collapsed: no
       smooth_scroll: yes
+  pdf_document:
+    toc: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -84,9 +84,28 @@ Para mais informações sobre o que representa cada critério de avaliação (Ca
 
 Todos os [dados](https://github.com/thiagonobrega/uepbOD/tree/master/data) e o [código fonte](https://github.com/thiagonobrega/uepbOD) para realizar estas analises estão disponiveis no github do projeto.
 
-*Outro ponto importante é que todas as análises foram realizadas sobre o Total Líquido recebito pelos servidores, sem considerar a contribuição patronal feita pela universidade.* ___Em outras palavras o valor executado será um pouco maior em virtude da contribuição patronal (que não esta disponivel no contracheque).___
+Desse modo fiquem livre para enviar uma correções e/ou contribuição ;)
 
-Desse modo fiquem livre para enviar uma correções ou contribuição ;)
+## Valores divergentes
+
+Alguns valores apresentados nesse documento são divergentes a dos apresentados no site da transparência. Entre os valores divergentes temos:
+
+   1. Diferença do valor executado (no portal da transparência) com pessoal;
+   2. Diferença no [quantitativo de servidores](http://transparencia.uepb.edu.br/download/arquivos_diversos/quadro-de-servidores.pdf) entre o portal da transparência e o exposto neste documento.
+
+#### Diferença do valor executado (no portal da transparência) com pessoal
+
+*Essa diferença existe porque todas as análises foram realizadas sobre o Total Líquido recebito pelos servidores, sem considerar a contribuição patronal feita pela universidade.* ___Em outras palavras o valor executado será um pouco maior em virtude da contribuição patronal (que não esta disponivel no contracheque).___
+
+#### Diferença no quantitativo de servidores entre o portal da transparência
+
+Novamente a diferença entre o quantitativo de servidores se da por duas razões;
+
+   1. O problema de como os dados do vínculo do servidores é capturado (detalhado no site do [crawller](https://github.com/thiagonobrega/uepbOD/blob/master/data/README.md)), que faz com que professores que se aposentaram e servidores temporarios sejam classificados com o vínculo 'não sei'
+   2. O quantitativo diverge principalmente pelo metodo de contagem, no [portal da transparência](http://transparencia.uepb.edu.br/download/arquivos_diversos/quadro-de-servidores.pdf) o quantitativo reflete o número de servidores em Dezembro (me parece que é o modo contabil, correto, de se calcular isso). Porem nesse documento é contado o numero de servidores que trabalharam durante o ano, ou seja se uma pessoa e contrata por 1 dia no ano ele será contabilizado
+
+Desse modo essas divergências não representam um risco a validade das análises aqui realizadas. Refletem apenas maneiras distintas de se contar e calcular.
+
 
 # Análise dos dados
 
