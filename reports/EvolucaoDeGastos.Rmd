@@ -2,7 +2,7 @@
 title: Análise da evolucao dos gastos com pessoal da Universidade Estadual da Paraíba
   ao longo dos anos
 author: "Thiago Nobrega"
-date: "May 30, 2017"
+date: "May 29, 2017"
 output:
   html_document:
     fig_caption: yes
