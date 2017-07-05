@@ -2,7 +2,7 @@
 title: Análise da evolucao dos gastos com pessoal da Universidade Estadual da Paraíba
   ao longo dos anos
 author: "Thiago Nobrega"
-date: "May 29, 2017"
+date: "May 31, 2017"
 output:
   html_document:
     fig_caption: yes
@@ -56,7 +56,7 @@ for (name in files[2:length(files)]) {
 
 # Introdução
 
-Muito se aventa que a raiz da crise financeira da Universidade Estadual da Paraíba (UEPB) são os gastos irresponsáveis com a folha de pagamento, alguns falam que a universidade é um cabide de emprego para quem a administra, outros falam que as funções gratificadas são dadas em ambulância.
+Muito se aventa que a raiz da crise financeira da Universidade Estadual da Paraíba (UEPB) são os gastos irresponsáveis com a folha de pagamento, alguns falam que a universidade é um cabide de emprego para quem a administra, outros falam que as funções gratificadas são dadas em abundância
 
 Diante dessas afirmações resolvi realizar uma auditoria independente para verificar se realmente o problema realmente está na má gestão da folha da UEPB. O primeiro passo foi desenvolver um software para capturar os dados do portal da transparência e armazená-los em um formato que permite-se a analise (para mais informação acesse o site do [crawler](https://github.com/thiagonobrega/uepbOD/blob/master/data/README.md)), ou seja todos os dados utilizados nesse documento são *público* (apenas os coletei e os armazenei em um formato aberto).
 
